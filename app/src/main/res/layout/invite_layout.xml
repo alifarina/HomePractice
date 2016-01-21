@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_view_back_color"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/layout_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="9"
+        android:background="@drawable/border_grey_white_bg"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_darkgray_white_bg"
+            android:gravity="top|left"
+            android:hint="EX : xyz@gmail.com"
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Separate multiple emails with a comma"
+            android:textColor="#d7d7d7" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_tabcolor_white_bg"
+            android:gravity="center"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="Send"
+            android:textColor="@color/email_editbox_color_commoon" />
+    </LinearLayout>
+
+</LinearLayout>

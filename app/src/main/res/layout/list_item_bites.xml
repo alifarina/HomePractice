@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_grey_white_bg"
+    android:orientation="vertical"
+    tools:context=".SplashActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile_bites" />
+
+
+        <LinearLayout
+            android:id="@+id/id_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/profile_image"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/profile_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="REMA"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/tab_bottom_bg_color" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/profile_image"
+                android:text="UNITED STATES"
+                android:textColor="@color/gray_color_bites" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/time_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/id_layout"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/watch_icon"
+            android:drawablePadding="3dp"
+            android:text="5 min"
+            android:textColor="@color/gray_color_bites" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bite_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:text="Nothing is impossible , as the word itself says I M Possible :) "
+        android:textColor="#000000" />
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/num_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/like"
+            android:drawablePadding="5dp"
+            android:text="51"
+            android:textColor="@color/gray_color_bites" />
+
+        <TextView
+            android:id="@+id/num_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/num_likes"
+            android:drawableLeft="@drawable/comment"
+            android:drawablePadding="5dp"
+            android:text="12"
+            android:textColor="@color/gray_color_bites" />
+
+        <ImageView
+            android:id="@+id/moreIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:src="@drawable/dot_icon" />
+
+        <!--<TextView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/num_likes"
+            android:padding="5dp"
+            android:text="DELETE"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/spam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/num_likes"
+            android:padding="5dp"
+            android:text="SPAM"
+            android:textColor="#000000" />-->
+
+    </LinearLayout>
+
+</LinearLayout>

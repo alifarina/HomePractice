@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="signup_label_bg_color">#bfa649</color>
+    <color name="email_editbox_color_commoon">#0d1d2c</color>
+    <color name="tab_bottom_bg_color">#032f5e</color>
+    <color name="tab_text_color">#ffcc33</color>
+    <color name="gray_color_bites">#c2c2c2</color>
+    <color name="list_view_back_color">#f7f7f7</color>
+    <color name="green_online_color">#0dc005</color>
+    <color name="red">#df1f1f</color>
+    <color name="blue_ok">#40B4E9</color>
+    <color name="edittetxt_bg">#efefef</color>
+</resources>

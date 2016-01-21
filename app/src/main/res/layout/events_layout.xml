@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_view_back_color"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/prev_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/month_pre" />
+
+        <TextView
+            android:id="@+id/month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="September"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/next_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/month_next" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_events"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_grey_white_bg"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/tab_bottom_bg_color"
+        android:dividerHeight="1dp"
+        android:padding="5dp"
+        android:scrollbars="none" />
+
+</LinearLayout>

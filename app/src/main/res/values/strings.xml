@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">650657525043983</string>
+    <!-- 1583279335291415 --><!-- 365988893594057-->
+    <string name="project_id">465401593107</string>
+    <!--550899413885-->
+    <string name="cancelled">Cancelled</string>
+    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+    <string name="ok">OK</string>
+
+    <string name="app_name">Dalit Hub</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="signup_text">SIGN UP</string>
+    <string name="login_text">LOGIN</string>
+    <string name="dalit_tag_line">DALIT\'S DIGITAL HOME</string>
+    <string name="email_id_tag">Email Id</string>
+    <string name="password_tag">Password</string>
+    <string name="f_name">First Name</string>
+    <string name="u_name">Username</string>
+    <string name="last_name">Last Name</string>
+    <string name="forgot_pass">FORGOT PASSWORD</string>
+
+    <!-- Tab Bar bottom text -->
+    <string name="bites">Bites</string>
+    <string name="events">Events</string>
+    <string name="members">Members</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_base">BaseActivity</string>
+
+    <string-array name="events_month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+
+
+    </string-array>
+    <string-array name="events_month_caps">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+
+
+    </string-array>
+</resources>

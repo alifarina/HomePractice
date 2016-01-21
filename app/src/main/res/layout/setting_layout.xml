@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/list_view_back_color"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/layout_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="9"
+        android:background="@drawable/border_grey_white_bg"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_setting" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/change_pass"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/tab_text_color"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:clickable="true"
+                android:text="Change Password"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/email_editbox_color_commoon" />
+
+            <TextView
+                android:id="@+id/feedback_click"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/tab_text_color"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:clickable="true"
+                android:text="Give Feedback"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/email_editbox_color_commoon" />
+
+            <TextView
+                android:id="@+id/privacy_click"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/tab_text_color"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:clickable="true"
+                android:text="Privacy Settings"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/email_editbox_color_commoon" />
+
+            <TextView
+                android:id="@+id/logout_click"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:background="@drawable/border_tabcolor_white_bg"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:text="Logout"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/email_editbox_color_commoon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/tab_text_color"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/dalit_tag_line"
+                android:textColor="@color/tab_bottom_bg_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
