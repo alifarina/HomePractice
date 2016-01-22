@@ -4,29 +4,44 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kelltontech.utils.ConnectivityUtils;
+import com.kelltontech.volley.ext.GsonObjectRequest;
+import com.kelltontech.volley.ext.RequestManager;
+import com.poject.dalithub.Utils.AppConstants;
 import com.poject.dalithub.Utils.AppUtils;
 import com.poject.dalithub.R;
 import com.poject.dalithub.Utils.UserPreferences;
+import com.poject.dalithub.listener.VolleyErrorListener;
+import com.poject.dalithub.models.DalitHubBaseModel;
 
-public class SettingsActivity extends Activity implements OnClickListener {
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+public class SettingsActivity extends DalitHubBaseActivity implements OnClickListener {
     private ImageView leftTopButton, rightTopButton;
     private TextView headerTitle;
     private Dialog feedsDialog, notification_dialog, privacy_dialog;
+    private String TAG = "settingTag";
+    private UserPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_layout);
+
+        mPref = new UserPreferences(this);
         AppUtils.updateDeviceResolution(this);
         initViews();
         setScreenListeners();
@@ -68,8 +83,10 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
                 break;
             case R.id.ok_button:
-                if (feedsDialog != null)
+                if (feedsDialog != null) {
+                    sendFeedback((View)v.getParent());
                     feedsDialog.cancel();
+                }
                 if (notification_dialog != null)
                     notification_dialog.cancel();
                 if (privacy_dialog != null)
@@ -87,6 +104,20 @@ public class SettingsActivity extends Activity implements OnClickListener {
                 break;
         }
 
+    }
+
+    private void sendFeedback(View v) {
+
+        EditText feedBox = (EditText) v.findViewById(R.id.feedBox);
+        String feed = feedBox.getText().toString();
+
+        if (feed != null && !feed.equals("")) {
+            try {
+                getData(AppConstants.actions.SEND_FEEDBACK, mPref.getUserId(), URLEncoder.encode(feed, "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showPrivacyDialog() {
@@ -163,5 +194,46 @@ public class SettingsActivity extends Activity implements OnClickListener {
 
     private void goBackScreen() {
         this.finish();
+    }
+
+    private String feedbackUrl(String userId, String feeds) {
+        return AppConstants.baseUrl + "sendfeedback?UserId=" + userId + "&feedback=" + feeds;
+    }
+
+    @Override
+    public void getData(final int actionID, String... params) {
+        if (!ConnectivityUtils.isNetworkEnabled(this)) {
+            showAlert(getResources().getString(R.string.err_msg), getResources().getString(R.string.error_internet));
+            return;
+        }
+        showProgressDialog(getResources().getString(R.string.loading));
+
+        switch (actionID) {
+            case AppConstants.actions.SEND_FEEDBACK:
+                RequestManager.addRequest(new GsonObjectRequest<DalitHubBaseModel>(
+                        feedbackUrl(params[0], params[1]), null, DalitHubBaseModel.class,
+                        new VolleyErrorListener(
+                                SettingsActivity.this, actionID)) {
+                    @Override
+                    protected void deliverResponse(DalitHubBaseModel response) {
+                        if (mResponse != null && mResponse.data != null) {
+                            String data = new String(mResponse.data);
+                            Log.d(TAG, "response json--->" + data);
+                        }
+
+                        SettingsActivity.this.updateUi(true, actionID, response);
+                    }
+                });
+                break;
+        }
+    }
+
+    @Override
+    public void updateUi(boolean status, int action, Object serviceResponse) {
+        super.updateUi(status, action, serviceResponse);
+    }
+
+    private String updatePrivacyUrl() {
+        return AppConstants.baseUrl+"updateuserprivacy?userId=2&showMobile=1&showeMail=1&showCompanyDetails=1&showOtherDetails=1";
     }
 }

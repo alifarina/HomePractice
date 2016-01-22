@@ -26,6 +26,9 @@ import com.poject.dalithub.screens.LandingScreenActivity;
 import com.poject.dalithub.screens.SettingsActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class ProfileFragment extends DalitHubBasefragment implements OnClickListener {
     LandingScreenActivity activity;
     UserPreferences mPref;
@@ -279,6 +282,7 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
         button_edit.setVisibility(View.VISIBLE);
 
         editTextFirstName.setVisibility(View.GONE);
+        editTextLastName.setVisibility(View.GONE);
         editTextComp.setVisibility(View.GONE);
         editTextBio.setVisibility(View.GONE);
         editTextSkills.setVisibility(View.GONE);
@@ -288,6 +292,7 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
         editTextEmail.setVisibility(View.GONE);
 
         textFirstName.setVisibility(View.VISIBLE);
+        textLastName.setVisibility(View.VISIBLE);
         TextComp.setVisibility(View.VISIBLE);
         TextBio.setVisibility(View.VISIBLE);
         TextSkills.setVisibility(View.VISIBLE);
@@ -312,7 +317,12 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
         String phone = editTextPhone.getText().toString();
         String email = editTextEmail.getText().toString();
 
-        getData(AppConstants.actions.UPDATE_PERSONAL_INFO, fname, lname, company, site, phone, bio, skills, address, mPref.getUserId());
+        try {
+            getData(AppConstants.actions.UPDATE_PERSONAL_INFO, fname, lname, URLEncoder.encode(company, "utf-8"), site, phone, URLEncoder.encode(bio, "utf-8"),
+                    URLEncoder.encode(skills, "utf-8"), URLEncoder.encode(address, "utf-8"), mPref.getUserId());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
 
     }

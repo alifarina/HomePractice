@@ -66,7 +66,7 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         initViews();
         setScreenListeners();
 
-        getData(AppConstants.actions.GET_EVENT_DETAIL, eve_id, mPref.getUserId());
+        getData(AppConstants.actions.GET_EVENT_DETAIL, "1", "1");//mPref.getUserId());
 
 
     }

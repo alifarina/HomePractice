@@ -2,7 +2,7 @@ package com.poject.dalithub.Utils;
 
 public interface AppConstants {
 
-    String baseUrl = "http://www.dalithub.com/";
+    String baseUrl = "http://api.dalithub.com/";
 
     int LINKED_IN_LOGIN_REQUEST_CODE = 2;
     String LINKEDINDATA = "linkedInData";
@@ -56,5 +56,9 @@ public interface AppConstants {
         //actions for Members screen
         int GET_ALL_MEMBERS = 29;
         int GET_MEMBER_DETAIL = 30;
+        int INVITE_MEMBER = 31;
+
+        // actions for settings screen
+        int SEND_FEEDBACK = 31;
     }
 }
