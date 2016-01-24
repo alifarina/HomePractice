@@ -217,9 +217,13 @@ public class CreateEventsActivity extends DalitHubBaseActivity implements OnClic
             AppUtils.showToast(this, "Please enter event location");
             return;
         }
-        if (webLink == null || webLink.length() <= 0 || !URLUtil.isValidUrl(webLink)){
-            AppUtils.showToast(CreateEventsActivity.this, "Please enter a valid URL");
-            return;
+        if (webLink != null && webLink.length() > 0) {
+            if (!URLUtil.isValidUrl(webLink)) {
+                AppUtils.showToast(CreateEventsActivity.this, "Please enter a valid URL");
+                return;
+            }
+        }else{
+            webLink="";
         }
         AppController appController = (AppController) getApplication();
         currentLocation = appController.getmLastLocation();

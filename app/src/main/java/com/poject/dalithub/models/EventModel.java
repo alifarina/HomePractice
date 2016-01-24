@@ -20,12 +20,15 @@ public class EventModel {
     @SerializedName("event_time")
     @Expose
     private String eventTime;
-    @SerializedName("dateofmonth")
+    @SerializedName("month")
     @Expose
-    private String dateofmonth;
-    @SerializedName("dateofweek")
+    private String month;
+    @SerializedName("day")
     @Expose
-    private String dateofweek;
+    private String day;
+    @SerializedName("year")
+    @Expose
+    private String year;
 
     /**
      * @return The eventId
@@ -86,30 +89,53 @@ public class EventModel {
     /**
      * @return The dateofmonth
      */
-    public String getDateofmonth() {
-        return dateofmonth;
-    }
+//    public String getDateofmonth() {
+//        return dateofmonth;
+//    }
 
     /**
      * @param dateofmonth The dateofmonth
      */
-    public void setDateofmonth(String dateofmonth) {
-        this.dateofmonth = dateofmonth;
-    }
+//    public void setDateofmonth(String dateofmonth) {
+//        this.dateofmonth = dateofmonth;
+//    }
 
     /**
      * @return The dateofweek
      */
-    public String getDateofweek() {
-        return dateofweek;
-    }
+//    public String getDateofweek() {
+//        return dateofweek;
+//    }
 
     /**
      * @param dateofweek The dateofweek
      */
-    public void setDateofweek(String dateofweek) {
-        this.dateofweek = dateofweek;
+//    public void setDateofweek(String dateofweek) {
+//        this.dateofweek = dateofweek;
+//    }
+
+
+    public String getYear() {
+        return year;
     }
 
+    public void setYear(String year) {
+        this.year = year;
+    }
 
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 }

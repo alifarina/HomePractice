@@ -53,6 +53,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
 
     private ImageView leftTopButton, rightTopButton;
     private TextView headerTitle;
+    private String event_id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
             return;
         }
 
-        String event_id = getIntent().getStringExtra("eventId");
+        event_id = getIntent().getStringExtra("eventId");
 
         getData(AppConstants.actions.GET_ALL_MEMBERS, mPref.getUserId(), String.valueOf(currentLocation.getLatitude()),
                 String.valueOf(currentLocation.getLongitude()), event_id);
@@ -93,6 +94,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
     private void initViews() {
         leftTopButton = (ImageView) findViewById(R.id.left_button);
         rightTopButton = (ImageView) findViewById(R.id.right_button);
+        rightTopButton.setImageResource(R.drawable.refresh);
         headerTitle = (TextView) findViewById(R.id.title);
 
         mListView = (ListView) findViewById(R.id.sectionedGrid_list);
@@ -103,6 +105,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
     @Override
     public void onResume() {
         super.onResume();
+        event_id = getIntent().getStringExtra("eventId");
         if (!isExecutedOnce) {
 
             if (currentLocation == null || currentLocation.getLatitude() <= 0) {
@@ -111,7 +114,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
             }
 
             getData(AppConstants.actions.GET_ALL_MEMBERS, mPref.getUserId(), String.valueOf(currentLocation.getLatitude()),
-                    String.valueOf(currentLocation.getLongitude()));
+                    String.valueOf(currentLocation.getLongitude()),event_id);
 
         }
     }
@@ -120,7 +123,7 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
     private void setScreenListeners() {
 
         leftTopButton.setOnClickListener(this);
-        rightTopButton.setVisibility(View.GONE);
+        rightTopButton.setOnClickListener(this);
         headerTitle.setText("Event Members");
 
 
@@ -264,7 +267,22 @@ public class MembersListActivity extends DalitHubBaseActivity implements OnClick
             case R.id.left_button:
                 goBackScreen();
                 break;
+            case R.id.right_button:
+                refreshData();
+                break;
         }
+    }
+
+    private void refreshData() {
+        AppController appController = AppController.getInstance();
+        currentLocation = appController.getmLastLocation();
+        if (currentLocation == null || currentLocation.getLatitude() <= 0) {
+            AppUtils.showToast(this, "unable to get location.Try again.");
+            return;
+        }
+
+        getData(AppConstants.actions.GET_ALL_MEMBERS, mPref.getUserId(), String.valueOf(currentLocation.getLatitude()),
+                String.valueOf(currentLocation.getLongitude()), event_id);
     }
 
     private void goBackScreen() {

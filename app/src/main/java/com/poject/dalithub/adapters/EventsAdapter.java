@@ -67,7 +67,7 @@ public class EventsAdapter extends BaseAdapter {
         String[] dateArr = date.split(" ");
         String dateString = dateArr[0];
         dateString = dateString.substring(0, dateString.lastIndexOf("/"));
-        holder.eventTime.setText(events.getDateofmonth() + " " + events.getDateofweek());
+        holder.eventTime.setText(events.getDay() + " " + setEventMonth(events.getMonth()));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

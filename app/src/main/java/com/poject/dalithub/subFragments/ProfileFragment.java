@@ -98,8 +98,9 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
                     getData(AppConstants.actions.GET_PERSONAL_INFO, mPref.getUserId());
                 } else if (v.getId() == R.id.right_button) {
                     System.out.println("right click");
-
-                    startActivity(new Intent(getLandingActivityContext(), SettingsActivity.class));
+                    Intent intent = new Intent(getLandingActivityContext(), SettingsActivity.class);
+                   // intent.putExtra("user_info", userInfo);
+                    startActivity(intent);
                 }
 
             }
@@ -373,6 +374,10 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
 
     public void setUserInfo(UserInfoModel userInfo) {
         this.userInfo = userInfo;
+        mPref.setEmailStatus(userInfo.isShowEmail());
+        mPref.setMobileStatus(userInfo.isShowMobile());
+        mPref.setCompStatus(userInfo.isShowCompanyDetails());
+        mPref.setOtherStatus(userInfo.isShowPersonalDetails());
     }
 
     private String updateInfoUrl(String fname, String lname, String company, String site, String mbl, String bio, String skills, String add, String userId) {

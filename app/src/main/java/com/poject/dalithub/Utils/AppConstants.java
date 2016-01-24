@@ -60,5 +60,7 @@ public interface AppConstants {
 
         // actions for settings screen
         int SEND_FEEDBACK = 31;
+        int UPDATE_PRIVACY = 32;
+        int CHANGE_PASSWORD = 33;
     }
 }

@@ -127,7 +127,7 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
 
             File imageFile = new File(imgDecodableString);
             image_bites.setVisibility(View.VISIBLE);
-            Picasso.with(CreateBitesScreen.this).load(imageFile).resize(200,200).into(image_bites);
+            Picasso.with(CreateBitesScreen.this).load(imageFile).resize(200, 200).into(image_bites);
 
 
         } else {
@@ -197,7 +197,7 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
         switch (actionID) {
             case AppConstants.actions.POST_A_BITE:
                 RequestManager.addRequest(new GsonObjectRequest<DalitHubBaseModel>(
-                        getCreateBiteUrl(mPref.getUserId(), params[0]), null, DalitHubBaseModel.class,
+                        getCreateBiteUrl(mPref.getUserId(), params[0], params[1]), null, DalitHubBaseModel.class,
                         new VolleyErrorListener(CreateBitesScreen.this, actionID)) {
                     @Override
                     protected void deliverResponse(DalitHubBaseModel response) {
@@ -293,8 +293,8 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
         }
     }
 
-    private String getCreateBiteUrl(String uId, String msg) {
-        return AppConstants.baseUrl + "insertnewbite?userId=" + uId + "&message=" + msg + "&image_content=";
+    private String getCreateBiteUrl(String uId, String msg, String base64Image) {
+        return AppConstants.baseUrl + "insertnewbite?userId=" + uId + "&message=" + msg + "&image_content=" + base64Image;
     }
 
     private void goBackScreen() {

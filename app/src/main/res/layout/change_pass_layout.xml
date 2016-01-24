@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:id="@+id/currentPassBox"
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
             android:hint=" Description.."
@@ -52,6 +53,7 @@
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
             android:hint=" Description.."
+            android:id="@+id/newPassBox"
             android:padding="3dp"
             android:singleLine="true" />
 
@@ -70,6 +72,7 @@
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
             android:hint=" Description.."
+            android:id="@+id/confirmBox"
             android:padding="3dp"
             android:singleLine="true" />
 

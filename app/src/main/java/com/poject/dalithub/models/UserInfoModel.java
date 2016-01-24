@@ -3,10 +3,12 @@ package com.poject.dalithub.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by admin on 1/6/2016.
  */
-public class UserInfoModel extends DalitHubBaseModel {
+public class UserInfoModel extends DalitHubBaseModel implements Serializable{
     @SerializedName("firstname")
     @Expose
     private String firstname;
@@ -46,6 +48,9 @@ public class UserInfoModel extends DalitHubBaseModel {
     @SerializedName("showCompanyDetails")
     @Expose
     private boolean showCompanyDetails;
+    @SerializedName("showPersonalDetails")
+    @Expose
+    private boolean showPersonalDetails;
 
 
     /**
@@ -204,5 +209,13 @@ public class UserInfoModel extends DalitHubBaseModel {
 
     public void setShowMobile(boolean showMobile) {
         this.showMobile = showMobile;
+    }
+
+    public boolean isShowPersonalDetails() {
+        return showPersonalDetails;
+    }
+
+    public void setShowPersonalDetails(boolean showPersonalDetails) {
+        this.showPersonalDetails = showPersonalDetails;
     }
 }

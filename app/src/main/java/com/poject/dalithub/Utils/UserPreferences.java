@@ -28,4 +28,36 @@ public class UserPreferences {
     public String isAdmin() {
         return pref.getString("isAdmin", "");
     }
+
+    public void setEmailStatus(boolean status) {
+        pref.edit().putBoolean("showEmail", status).commit();
+    }
+
+    public void setMobileStatus(boolean status) {
+        pref.edit().putBoolean("showMobile", status).commit();
+    }
+
+    public void setCompStatus(boolean status) {
+        pref.edit().putBoolean("showComp", status).commit();
+    }
+
+    public void setOtherStatus(boolean status) {
+        pref.edit().putBoolean("showOther", status).commit();
+    }
+
+    public boolean showEmailStatus() {
+        return pref.getBoolean("showEmail", false);
+    }
+
+    public boolean showMobileStatus() {
+        return pref.getBoolean("showMobile", false);
+    }
+
+    public boolean showCompStatus() {
+        return pref.getBoolean("showComp", false);
+    }
+
+    public boolean showOtherStatus() {
+        return pref.getBoolean("showOther", false);
+    }
 }

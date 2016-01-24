@@ -14,6 +14,7 @@ import com.poject.dalithub.models.EventAttendee;
 import com.poject.dalithub.models.EventCommentModel;
 import com.poject.dalithub.models.EventDetail;
 import com.poject.dalithub.models.EventDetailBaseClass;
+import com.poject.dalithub.models.Member;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -66,7 +67,7 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         initViews();
         setScreenListeners();
 
-        getData(AppConstants.actions.GET_EVENT_DETAIL, "1", "1");//mPref.getUserId());
+        getData(AppConstants.actions.GET_EVENT_DETAIL, eve_id, mPref.getUserId());//mPref.getUserId());
 
 
     }
@@ -215,6 +216,9 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
                 tv_attendee.setText(attendee.getUserName());
                 Log.d("name ", "" + attendee.getUserName());
 
+                attendee_item.setTag(attendee.getUserId());
+                attendee_item.setOnClickListener(this);
+
                 attendeesLayout.addView(attendee_item);
             }
         }
@@ -260,9 +264,20 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
             case R.id.view_more_members:
                 showMembersListing();
                 break;
+            case R.id.attendee_item:
+                attendeeItemClick(v);
+                break;
             default:
                 break;
         }
+
+    }
+
+    private void attendeeItemClick(View v) {
+        String attendeeId = (String) v.getTag();
+        Intent i = new Intent(this, MemberDetailScreen.class);
+        i.putExtra("MemberId", attendeeId);
+        startActivity(i);
 
     }
 

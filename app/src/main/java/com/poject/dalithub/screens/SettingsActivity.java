@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,16 +26,52 @@ import com.poject.dalithub.R;
 import com.poject.dalithub.Utils.UserPreferences;
 import com.poject.dalithub.listener.VolleyErrorListener;
 import com.poject.dalithub.models.DalitHubBaseModel;
+import com.poject.dalithub.models.UserInfoModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class SettingsActivity extends DalitHubBaseActivity implements OnClickListener {
+public class SettingsActivity extends DalitHubBaseActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ImageView leftTopButton, rightTopButton;
     private TextView headerTitle;
     private Dialog feedsDialog, notification_dialog, privacy_dialog;
     private String TAG = "settingTag";
     private UserPreferences mPref;
+
+    public String getMobileStatus() {
+        return mobileStatus;
+    }
+
+    public void setMobileStatus(String mobileStatus) {
+        this.mobileStatus = mobileStatus;
+    }
+
+    public String getEmailStatus() {
+        return emailStatus;
+    }
+
+    public void setEmailStatus(String emailStatus) {
+        this.emailStatus = emailStatus;
+    }
+
+    public String getCompStatus() {
+        return compStatus;
+    }
+
+    public void setCompStatus(String compStatus) {
+        this.compStatus = compStatus;
+    }
+
+    public String getOtherStatus() {
+        return otherStatus;
+    }
+
+    public void setOtherStatus(String otherStatus) {
+        this.otherStatus = otherStatus;
+    }
+
+    private String mobileStatus = "0", emailStatus = "0", compStatus = "0", otherStatus = "0";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +80,8 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
         setContentView(R.layout.setting_layout);
 
         mPref = new UserPreferences(this);
+        // userInfo = (UserInfoModel) getIntent().getSerializableExtra("user_info");
+
         AppUtils.updateDeviceResolution(this);
         initViews();
         setScreenListeners();
@@ -83,22 +123,16 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
 
                 break;
             case R.id.ok_button:
-                if (feedsDialog != null) {
-                    sendFeedback((View)v.getParent());
-                    feedsDialog.cancel();
-                }
+
                 if (notification_dialog != null)
                     notification_dialog.cancel();
-                if (privacy_dialog != null)
-                    privacy_dialog.cancel();
+
                 break;
             case R.id.cancel_button:
-                if (feedsDialog != null)
-                    feedsDialog.cancel();
+
                 if (notification_dialog != null)
                     notification_dialog.cancel();
-                if (privacy_dialog != null)
-                    privacy_dialog.cancel();
+
                 break;
             default:
                 break;
@@ -108,7 +142,7 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
 
     private void sendFeedback(View v) {
 
-        EditText feedBox = (EditText) v.findViewById(R.id.feedBox);
+        EditText feedBox = (EditText) v;
         String feed = feedBox.getText().toString();
 
         if (feed != null && !feed.equals("")) {
@@ -117,6 +151,8 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+        } else {
+            AppUtils.showToast(SettingsActivity.this, "Please give your feedback.");
         }
     }
 
@@ -131,8 +167,34 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
         TextView ok = (TextView) privacy_dialog
                 .findViewById(R.id.ok_button);
 
-        cancel.setOnClickListener(this);
-        ok.setOnClickListener(this);
+        CheckBox check_mbl = (CheckBox) privacy_dialog.findViewById(R.id.checkbox_mbl);
+        CheckBox check_email = (CheckBox) privacy_dialog.findViewById(R.id.checkbox_email);
+        CheckBox check_comp = (CheckBox) privacy_dialog.findViewById(R.id.checkbox_comp);
+        CheckBox check_other = (CheckBox) privacy_dialog.findViewById(R.id.checkbox_other);
+
+        check_email.setChecked(mPref.showEmailStatus());
+        check_mbl.setChecked(mPref.showMobileStatus());
+        check_comp.setChecked(mPref.showCompStatus());
+        check_other.setChecked(mPref.showOtherStatus());
+
+        check_mbl.setOnCheckedChangeListener(this);
+        check_email.setOnCheckedChangeListener(this);
+        check_comp.setOnCheckedChangeListener(this);
+        check_other.setOnCheckedChangeListener(this);
+
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                privacy_dialog.dismiss();
+            }
+        });
+        ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData(AppConstants.actions.UPDATE_PRIVACY, mPref.getUserId(),
+                        getMobileStatus(), getEmailStatus(), getCompStatus(), getOtherStatus());
+            }
+        });
 
         privacy_dialog.show();
 
@@ -178,8 +240,18 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
                 .findViewById(R.id.cancel_button);
         TextView ok = (TextView) feedsDialog.findViewById(R.id.ok_button);
 
-        cancel.setOnClickListener(this);
-        ok.setOnClickListener(this);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedsDialog.dismiss();
+            }
+        });
+        ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendFeedback(feedsDialog.findViewById(R.id.feedBox));
+            }
+        });
 
         feedsDialog.show();
 
@@ -225,15 +297,112 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
                     }
                 });
                 break;
+            case AppConstants.actions.UPDATE_PRIVACY:
+                RequestManager.addRequest(new GsonObjectRequest<DalitHubBaseModel>(
+                        updatePrivacyUrl(params[0], params[1], params[2], params[3], params[4]), null, DalitHubBaseModel.class,
+                        new VolleyErrorListener(
+                                SettingsActivity.this, actionID)) {
+                    @Override
+                    protected void deliverResponse(DalitHubBaseModel response) {
+                        if (mResponse != null && mResponse.data != null) {
+                            String data = new String(mResponse.data);
+                            Log.d(TAG, "response json--->" + data);
+                        }
+
+                        SettingsActivity.this.updateUi(true, actionID, response);
+                    }
+                });
+                break;
         }
     }
 
     @Override
     public void updateUi(boolean status, int action, Object serviceResponse) {
-        super.updateUi(status, action, serviceResponse);
+        hideProgressDialog();
+
+        Log.e(TAG, " updateUi ::Service Response : " + serviceResponse);
+
+        //If unable to process the request
+        if (!status && serviceResponse instanceof String) {
+            showAlert(getResources().getString(R.string.err_msg), getResources().getString(R.string.request_fail));
+            Log.e(TAG, "Problem with Server Response");
+            return;
+        }
+
+        //If not valid response
+        if (!(serviceResponse instanceof DalitHubBaseModel)) {
+            showAlert(getResources().getString(R.string.err_msg), getResources().getString(R.string.error_unknown));
+            Log.e(TAG, "Server Response is not instance of BaseModel");
+            return;
+        } else if (!((DalitHubBaseModel) serviceResponse).getResponseCode().equalsIgnoreCase("127") &&
+                !((DalitHubBaseModel) serviceResponse).getResponseCode().equalsIgnoreCase("123")) {
+            showAlert(getResources().getString(R.string.err_msg), ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+            Log.e(TAG, "Message from Server : " + ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+            return;
+        }
+
+        switch (action) {
+            case AppConstants.actions.SEND_FEEDBACK: {
+                Log.d(TAG, "response is success..........................");
+                try {
+                    DalitHubBaseModel response = (DalitHubBaseModel) serviceResponse;
+
+                    AppUtils.showToast(SettingsActivity.this,
+                            ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+                    if (feedsDialog != null && feedsDialog.isShowing()) {
+                        feedsDialog.cancel();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            break;
+            case AppConstants.actions.UPDATE_PRIVACY: {
+                Log.d(TAG, "response is success..........................");
+                try {
+                    DalitHubBaseModel response = (DalitHubBaseModel) serviceResponse;
+
+                    AppUtils.showToast(SettingsActivity.this,
+                            response.getResponseDescription());
+                    if (privacy_dialog != null && privacy_dialog.isShowing()) {
+                        privacy_dialog.cancel();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            break;
+        }
     }
 
-    private String updatePrivacyUrl() {
-        return AppConstants.baseUrl+"updateuserprivacy?userId=2&showMobile=1&showeMail=1&showCompanyDetails=1&showOtherDetails=1";
+    private String updatePrivacyUrl(String userId, String mbl_status, String mail_status, String comp_status, String other_status) {
+        return AppConstants.baseUrl + "updateuserprivacy?userId=" + userId + "&showMobile=" + mbl_status + "&showeMail=" + mail_status +
+                "&showCompanyDetails=" + comp_status + "&showOtherDetails=" + other_status;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.checkbox_mbl:
+                setMobileStatus(isChecked ? "1" : "0");
+                mPref.setMobileStatus(isChecked);
+                break;
+            case R.id.checkbox_other:
+                setOtherStatus(isChecked ? "1" : "0");
+                mPref.setOtherStatus(isChecked);
+                break;
+            case R.id.checkbox_comp:
+                setCompStatus(isChecked ? "1" : "0");
+                mPref.setCompStatus(isChecked);
+                break;
+            case R.id.checkbox_email:
+                setEmailStatus(isChecked ? "1" : "0");
+                mPref.setEmailStatus(isChecked);
+                break;
+        }
     }
 }

@@ -118,8 +118,12 @@ public class EventsFragment extends DalitHubBasefragment implements OnClickListe
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                startActivity(new Intent(getActivity(),
-                        EventsDetailScreen.class));
+                Intent intent = new Intent(getActivity(),
+                        EventsDetailScreen.class);
+                EventModel event = (EventModel) parent.getAdapter().getItem(position);
+                intent.putExtra("event_id", event.getEventId());
+
+                startActivity(intent);
             }
         });
     }
@@ -144,6 +148,8 @@ public class EventsFragment extends DalitHubBasefragment implements OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.EVENT_CREATED && resultCode == AppConstants.EVENT_CREATED) {
             Log.d("onActivityResult", "Event successfully created");
+            int callingMonth = currentMonth + 1;
+            getData(AppConstants.actions.GET_ALL_EVENTS, currentYear + "-" + callingMonth + "-1", mPref.getUserId());
         }
     }
 
@@ -229,7 +235,7 @@ public class EventsFragment extends DalitHubBasefragment implements OnClickListe
     }
 
     private String getAllEventsUrl(String date, String user_id) {
-        String url = AppConstants.baseUrl + "getallevents?Date=" + date + "&user_id=" + user_id;
+        String url = AppConstants.baseUrl + "getallevents?Date=" + date + "&userId=" + user_id;
         Log.d("getAllEventsUrl", "" + url);
         return url;
     }
