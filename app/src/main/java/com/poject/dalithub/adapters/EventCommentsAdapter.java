@@ -1,5 +1,6 @@
 package com.poject.dalithub.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.poject.dalithub.R;
+import com.poject.dalithub.Utils.UserPreferences;
 import com.poject.dalithub.models.Comment;
 import com.poject.dalithub.models.EventCommentModel;
 import com.poject.dalithub.screens.CommentsScreen;
@@ -22,10 +24,12 @@ import java.util.List;
 public class EventCommentsAdapter extends BaseAdapter {
     List<EventCommentModel> commentsList;
     Context mContext;
+    UserPreferences mPref;
 
     public EventCommentsAdapter(Context con, List<EventCommentModel> list) {
         commentsList = list;
         mContext = con;
+        mPref = new UserPreferences((Activity) con);
     }
 
     @Override
@@ -65,6 +69,11 @@ public class EventCommentsAdapter extends BaseAdapter {
         holder.content.setText(Html.fromHtml("<B>" + comment.getUserName() + "</B> " + comment.getComment()));
         Log.d("comment.getPostedDate()", comment.getCommentedTime());
         holder.time.setText(comment.getCommentedTime());
+
+        //visibility for delete icon
+        holder.deleteIcon.setVisibility(View.GONE);
+        if (comment.getUserId().equals(mPref.getUserId()))
+            holder.deleteIcon.setVisibility(View.VISIBLE);
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override

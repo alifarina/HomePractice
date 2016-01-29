@@ -34,6 +34,9 @@ import com.poject.dalithub.models.DalitHubBaseModel;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -98,34 +101,52 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
             // Move to first row
             cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            int columnIndex = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);//cursor.getColumnIndex(filePathColumn[0]);
 
             imgDecodableString = cursor.getString(columnIndex);
             cursor.close();
             byte[] bytes;
             ByteArrayOutputStream output = null;
-            try {
-                InputStream inputStream = new FileInputStream(imgDecodableString);//You can get an inputStream using any IO API
+//            try {
+//                InputStream inputStream = new FileInputStream(imgDecodableString);//You can get an inputStream using any IO API
+//
+//                byte[] buffer = new byte[8192];
+//                int bytesRead;
+//                output = new ByteArrayOutputStream();
+//
+//                while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                    output.write(buffer, 0, bytesRead);
+//                }
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            bytes = output.toByteArray();
+//            encodedImageString = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-                byte[] buffer = new byte[8192];
-                int bytesRead;
-                output = new ByteArrayOutputStream();
-
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    output.write(buffer, 0, bytesRead);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            bytes = output.toByteArray();
-            encodedImageString = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-            Log.d("photo added.", encodedImageString);
+//            Log.d("photo added.", encodedImageString);
             ((TextView) findViewById(R.id.addImage_button)).setText("Image Added");
 
             File imageFile = new File(imgDecodableString);
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(imageFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Bitmap bmp = BitmapFactory.decodeStream(fis);
+            //Bitmap bmp = BitmapFactory.decodeFile(imgDecodableString);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+            bytes = bos.toByteArray();
+            encodedImageString = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+            Log.d("photo added.", encodedImageString);
+
+
             image_bites.setVisibility(View.VISIBLE);
             Picasso.with(CreateBitesScreen.this).load(imageFile).resize(200, 200).into(image_bites);
 
@@ -175,7 +196,7 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
 
         try {
             content = URLEncoder.encode(content, "UTF-8");
-//            encodedImageString = URLEncoder.encode(encodedImageString, "UTF-8");
+            encodedImageString = URLEncoder.encode(encodedImageString, "UTF-8");
             getData(AppConstants.actions.POST_A_BITE, content);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -197,7 +218,7 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
         switch (actionID) {
             case AppConstants.actions.POST_A_BITE:
                 RequestManager.addRequest(new GsonObjectRequest<DalitHubBaseModel>(
-                        getCreateBiteUrl(mPref.getUserId(), params[0], params[1]), null, DalitHubBaseModel.class,
+                        getCreateBiteUrl(), getCreateBiteData(mPref.getUserId(), params[0]), DalitHubBaseModel.class,
                         new VolleyErrorListener(CreateBitesScreen.this, actionID)) {
                     @Override
                     protected void deliverResponse(DalitHubBaseModel response) {
@@ -279,7 +300,7 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
                     DalitHubBaseModel response = (DalitHubBaseModel) serviceResponse;
 
                     AppUtils.showToast(CreateBitesScreen.this,
-                            ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+                            response.getResponseDescription());
                     setResult(AppConstants.BITE_POSTED);
                     CreateBitesScreen.this.finish();
 
@@ -293,8 +314,24 @@ public class CreateBitesScreen extends DalitHubBaseActivity implements OnClickLi
         }
     }
 
-    private String getCreateBiteUrl(String uId, String msg, String base64Image) {
-        return AppConstants.baseUrl + "insertnewbite?userId=" + uId + "&message=" + msg + "&image_content=" + base64Image;
+    private String getCreateBiteUrl() {
+        //  return AppConstants.baseUrl + "insertnewbite?userId=" + uId + "&message=" + msg + "&image_content=" + base64Image;
+        return AppConstants.baseUrl + "insertnewbite";
+    }
+
+    private String getCreateBiteData(String uId, String msg) {
+
+        //return AppConstants.baseUrl + "insertnewbite"; //"insertnewbite?userId=" + uId + "&message=" + msg + "&image_content=";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("userId", uId);
+            json.put("message", msg);
+            json.put("image_content", encodedImageString);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 
     private void goBackScreen() {

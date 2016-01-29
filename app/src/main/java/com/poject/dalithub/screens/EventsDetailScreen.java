@@ -43,6 +43,9 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
     private RelativeLayout rsvpLayout;
     private ImageView weblinkClick;
     private TextView view_more_members;
+    private TextView event_time;
+    private TextView event_date;
+    private TextView headerDate;
 
     public EventDetailBaseClass getResponse() {
         return response;
@@ -115,6 +118,13 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         }
     }
 
+    private String setEventMonth(String indexVal) {
+        int index = Integer.parseInt(indexVal);
+
+        String[] monthsArr = getResources().getStringArray(R.array.events_month_caps);
+        return monthsArr[index - 1];
+    }
+
     @Override
     public void updateUi(boolean status, int action, Object serviceResponse) {
         hideProgressDialog();
@@ -181,16 +191,22 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         description.setText("" + detail.getDescription());
         address.setText("" + detail.getEventAddress());
 
+        event_time.setText("" + detail.getEventTime());
+        event_date.setText("" + detail.getEventDate());
+
+        String date = detail.getEventDate();
+        String[] dateArr = date.split(" ");
+        String dateString = dateArr[0];
+        dateString = dateString.substring(0, dateString.lastIndexOf("/"));
+        String[] dateSubArr = dateString.split("/");
+        headerDate.setText(dateSubArr[1] + " " + setEventMonth(dateSubArr[0]));
+
         if (detail.getImagePath() != null) {
             eventImageview.setVisibility(View.VISIBLE);
             Picasso.with(EventsDetailScreen.this).load(detail.getImagePath()).placeholder(R.drawable.profile_pic).into(eventImageview);
         }
 
-        //parsing event date
-        String date = detail.getEventDate();
-        String[] dateArr = date.split(" ");
-        String dateString = dateArr[0];
-        dateString = dateString.substring(0, dateString.lastIndexOf("/"));
+
         Log.d("Details======", detail.getImagePath() + " " + dateString);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -221,6 +237,8 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
 
                 attendeesLayout.addView(attendee_item);
             }
+        } else {
+            view_more_members.setVisibility(View.GONE);
         }
     }
 
@@ -241,6 +259,9 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         eventImageview = (ImageView) findViewById(R.id.eventImage);
         attendeesLayout = (LinearLayout) findViewById(R.id.attendee_layout);
         view_more_members = (TextView) findViewById(R.id.view_more_members);
+        event_time = (TextView) findViewById(R.id.event_time);
+        event_date = (TextView) findViewById(R.id.event_date);
+        headerDate = (TextView) findViewById(R.id.header_date);
 
         rsvpLayout = (RelativeLayout) findViewById(R.id.rsvp_layout);
         weblinkClick = (ImageView) findViewById(R.id.weblink);

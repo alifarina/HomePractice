@@ -18,8 +18,10 @@ import android.widget.TextView;
 import com.poject.dalithub.R;
 import com.poject.dalithub.Utils.AppUtils;
 import com.poject.dalithub.Utils.UserPreferences;
+import com.poject.dalithub.models.Member;
 import com.poject.dalithub.models.NewBite;
 import com.poject.dalithub.screens.BitesFullScreenView;
+import com.poject.dalithub.screens.MemberDetailScreen;
 import com.poject.dalithub.subFragments.DalitHubBasefragment;
 import com.poject.dalithub.subFragments.MyBitesFragment;
 import com.squareup.picasso.Picasso;
@@ -55,7 +57,7 @@ public class BitesAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = null;
         ViewHolder holder;
         if (convertView == null) {
@@ -100,6 +102,14 @@ public class BitesAdapter extends BaseAdapter {
 //        holder.deleteClick.setVisibility(View.GONE);
         Log.d("posted id " + biteData.getPostedUserId(), " user id " + mPref.getUserId());
 
+        holder.uName.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, MemberDetailScreen.class);
+                i.putExtra("MemberId", biteData.getPostedUserId());
+                mContext.startActivity(i);
+            }
+        });
 
         if (biteData.getLikestatus().equals("1")) {
             Log.d("Tag", "getLikeStatus === 1");
@@ -114,11 +124,11 @@ public class BitesAdapter extends BaseAdapter {
             Picasso.with(mContext).load(biteData.getImageUrl()).placeholder(-1).into(holder.postImage);
         }
 
-        if (!TextUtils.isEmpty(biteData.getProfileImage())) {
+        if (biteData.getProfileImage() != null && !biteData.getProfileImage().equals("")) {
 
             int profileParams = (int) (AppUtils.DEVICE_HEIGHT * 0.1f);
 
-            Picasso.with(mContext).load(biteData.getImageUrl()).resize(profileParams, profileParams).into(holder.profile_image);
+            Picasso.with(mContext).load(biteData.getProfileImage()).resize(profileParams, profileParams).into(holder.profile_image);
         }
 
         holder.numComments.setOnClickListener(new OnClickListener() {
@@ -131,7 +141,7 @@ public class BitesAdapter extends BaseAdapter {
         holder.numLikes.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MyBitesFragment) fragContext).setLikesForThisPost(biteData.getBiteid());
+                ((MyBitesFragment) fragContext).setLikesForThisPost(biteData.getBiteid(),position);
             }
         });
 //        holder.spamClick.setOnClickListener(new OnClickListener() {

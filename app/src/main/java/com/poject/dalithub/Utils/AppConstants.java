@@ -31,6 +31,7 @@ public interface AppConstants {
         int DO_LOGIN_FB = 4;
         int DO_LOGIN_LINKEDIN = 5;
         int FORGOT_PASSWORD = 12;
+        int VERIFY_ACCOUNT = 35;
 
         //actions for Bites Screen
         int GET_ALL_BITES = 6;
@@ -59,8 +60,8 @@ public interface AppConstants {
         int INVITE_MEMBER = 31;
 
         // actions for settings screen
-        int SEND_FEEDBACK = 31;
-        int UPDATE_PRIVACY = 32;
-        int CHANGE_PASSWORD = 33;
+        int SEND_FEEDBACK = 32;
+        int UPDATE_PRIVACY = 33;
+        int CHANGE_PASSWORD = 34;
     }
 }

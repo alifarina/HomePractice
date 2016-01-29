@@ -203,7 +203,9 @@ public class SettingsActivity extends DalitHubBaseActivity implements OnClickLis
     private void loggoutFromApp() {
 
         //removing user credentials
-        new UserPreferences(this).saveUserId("");
+        mPref.saveUserId("");
+        mPref.setAccountVerified(false);
+
 
         Intent newTask = new Intent(SettingsActivity.this,
                 LoginSignupChooserActivity.class);

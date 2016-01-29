@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Html;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.poject.dalithub.R;
+import com.poject.dalithub.Utils.UserPreferences;
 import com.poject.dalithub.models.Comment;
 import com.poject.dalithub.screens.CommentsScreen;
 
@@ -27,11 +29,13 @@ import org.w3c.dom.Text;
 
 public class CommentsAdapter extends BaseAdapter {
     List<Comment> commentsList;
+    UserPreferences mPref;
     Context mContext;
 
     public CommentsAdapter(Context con, List<Comment> list) {
         commentsList = list;
         mContext = con;
+        mPref = new UserPreferences((Activity) mContext);
     }
 
     @Override
@@ -71,6 +75,11 @@ public class CommentsAdapter extends BaseAdapter {
         holder.content.setText(Html.fromHtml("<B>" + comment.getUserName() + "</B> " + comment.getComment()));
         Log.d("comment.getPostedDate()", comment.getPostedDate());
         holder.time.setText(comment.getPostedDate());
+
+        //visibility for delete icon
+        holder.deleteIcon.setVisibility(View.GONE);
+        if (comment.getUserId().equals(mPref.getUserId()))
+            holder.deleteIcon.setVisibility(View.VISIBLE);
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override

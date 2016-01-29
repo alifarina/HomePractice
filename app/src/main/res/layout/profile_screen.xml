@@ -38,7 +38,8 @@
                     android:drawableLeft="@drawable/online"
                     android:drawablePadding="3dp"
                     android:text="Online"
-                    android:textColor="@color/green_online_color" />
+                    android:textColor="@color/green_online_color"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -343,6 +344,7 @@
                         android:background="@color/edittetxt_bg"
                         android:hint="Phone no."
                         android:imeOptions="actionDone"
+                        android:inputType="phone"
                         android:padding="5dp"
                         android:singleLine="true"
                         android:visibility="gone" />

@@ -36,9 +36,9 @@ public class UserInfoModel extends DalitHubBaseModel implements Serializable{
     @SerializedName("Skills")
     @Expose
     private String Skills;
-    @SerializedName("profileImage")
+    @SerializedName("ProfileImage")
     @Expose
-    private String profileImage;
+    private String ProfileImage;
     @SerializedName("showEmail")
     @Expose
     private boolean showEmail;
@@ -180,11 +180,11 @@ public class UserInfoModel extends DalitHubBaseModel implements Serializable{
     }
 
     public String getProfileImage() {
-        return profileImage;
+        return ProfileImage;
     }
 
     public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+        this.ProfileImage = profileImage;
     }
 
     public boolean isShowEmail() {

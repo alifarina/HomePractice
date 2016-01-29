@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -257,23 +258,20 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
             case AppConstants.actions.DO_LOGIN_GOOGLE:
             case AppConstants.actions.DO_LOGIN_FB:
             case AppConstants.actions.DO_LOGIN_LINKEDIN:
-                try {
-                    RequestManager.addRequest(new GsonObjectRequest<SignUpModel>(
-                            getRegistrationUrl(params[0], URLEncoder.encode(params[1], "UTF-8"), URLEncoder.encode(params[2], "UTF-8"), params[3], params[4]), null, SignUpModel.class,
-                            new VolleyErrorListener(LoginActivity.this, actionID)) {
-                        @Override
-                        protected void deliverResponse(SignUpModel response) {
-                            if (mResponse != null && mResponse.data != null) {
-                                String data = new String(mResponse.data);
-                                Log.d(TAG, "response json--->" + data);
-                            }
-
-                            LoginActivity.this.updateUi(true, actionID, response);
+                RequestManager.addRequest(new GsonObjectRequest<SignUpModel>(
+                        getRegistrationUrl(params[0], params[1], params[2], params[3], params[4]), null, SignUpModel.class,
+                        new VolleyErrorListener(LoginActivity.this, actionID)) {
+                    @Override
+                    protected void deliverResponse(SignUpModel response) {
+                        if (mResponse != null && mResponse.data != null) {
+                            String data = new String(mResponse.data);
+                            Log.d(TAG, "response json--->" + data);
                         }
-                    });
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+
+                        LoginActivity.this.updateUi(true, actionID, response);
+                    }
+                });
+
 
                 break;
             case AppConstants.actions.FORGOT_PASSWORD:
@@ -313,22 +311,19 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
 
     public String getRegistrationUrl(String email, String firstName, String lastName, String password, String type) {
 
-        try {
-            return AppConstants.baseUrl
-                    + "Registration?emailId="
-                    + email
-                    + "&fname="
-                    + URLEncoder.encode(firstName, "UTF-8")
-                    + "&lname="
-                    + URLEncoder.encode(lastName, "UTF-8")
-                    + "&Password="
-                    + password
-                    + "&type_of_registration=" + type + "&uniqueId=&userLong=00.0000&userLat=00.0000&deviceToken=&deviceUniqueId=&source=2";
+        Log.d("Registrat-------------", firstName + " " + lastName);
+        return AppConstants.baseUrl
+                + "Registration?emailId="
+                + email
+                + "&fname="
+                + firstName
+                + "&lname="
+                + lastName
+                + "&Password="
+                + password
+                + "&type_of_registration=" + type + "&uniqueId=&userLong=" + currentLocation.getLongitude() + "&userLat=" + currentLocation.getLatitude() + "&deviceToken=&deviceUniqueId=&source=2";
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+
     }
 
     @Override
@@ -345,12 +340,22 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
         }
 
         //If not valid response
+        String responseCode = ((DalitHubBaseModel) serviceResponse).getResponseCode();
         if (!(serviceResponse instanceof DalitHubBaseModel)) {
             showAlert(getResources().getString(R.string.err_msg), getResources().getString(R.string.error_unknown));
             Log.e(TAG, "Server Response is not instance of BaseModel");
             return;
-        } else if (!((DalitHubBaseModel) serviceResponse).getResponseCode().equalsIgnoreCase("110") && !((DalitHubBaseModel) serviceResponse).getResponseCode().equalsIgnoreCase("108") && !((DalitHubBaseModel) serviceResponse).getResponseCode().equalsIgnoreCase("103")) {
-            showAlert(getResources().getString(R.string.err_msg), ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+        } else if (!responseCode.equalsIgnoreCase("110") && !responseCode.equalsIgnoreCase("108") && !responseCode.equalsIgnoreCase("103")) {
+
+            if (responseCode.equalsIgnoreCase("114")) {
+                Intent in = new Intent(this,
+                        AccountVerification.class);
+                in.putExtra("LoginRequired", true);
+                startActivity(in);
+
+            } else {
+                showAlert(getResources().getString(R.string.err_msg), ((DalitHubBaseModel) serviceResponse).getResponseDescription());
+            }
             Log.e(TAG, "Message from Server : " + ((DalitHubBaseModel) serviceResponse).getResponseDescription() + " " + ((DalitHubBaseModel) serviceResponse).getResponseCode());
             return;
         }
@@ -367,6 +372,7 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
 
                     mPref.saveUserId(response.getUserId());
                     mPref.setIsAdmin(response.getIsAdmin());
+                    mPref.setAccountVerified(true);
 
                     Intent in = new Intent(LoginActivity.this,
                             LandingScreenActivity.class);
@@ -391,6 +397,7 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
 
 
                     mPref.saveUserId(response.getUserId());
+                    mPref.setAccountVerified(true);
 
                     Intent in = new Intent(LoginActivity.this,
                             LandingScreenActivity.class);
@@ -494,7 +501,8 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
                 arrParams[3] = "";
                 arrParams[4] = "3";
 
-                getData(AppConstants.actions.DO_LOGIN_FB, arrParams);
+                if (isLocationAvailable())
+                    getData(AppConstants.actions.DO_LOGIN_FB, arrParams);
             }
         });
     }
@@ -573,21 +581,19 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
                         + ", Image: " + currentPerson.getImage().getUrl());
 
                 //call registration service
-                String[] arrParams = new String[5];
-                arrParams[0] = email;
-                arrParams[1] = currentPerson.getName().toString();
-                arrParams[2] = currentPerson.getDisplayName().toString();
-                arrParams[3] = "";
-                arrParams[4] = "2";
+                String disName = currentPerson.getDisplayName();
+                String fname = disName.substring(0, disName.lastIndexOf(" "));
+                String lname = disName.substring(disName.lastIndexOf(" ") + 1, disName.length());
 
-                System.out.println("getting params ----------- " + arrParams.length);
-
-                getData(AppConstants.actions.DO_LOGIN_GOOGLE, arrParams);
+                if (isLocationAvailable())
+                    getData(AppConstants.actions.DO_LOGIN_GOOGLE, email, URLEncoder.encode(fname, "utf-8"), URLEncoder.encode(lname, "utf-8"), "", "2");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    Location currentLocation;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -627,8 +633,8 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
                 arrParams[3] = "";
                 arrParams[4] = "4";
 
-
-                getData(AppConstants.actions.DO_LOGIN_LINKEDIN, arrParams);
+                if (isLocationAvailable())
+                    getData(AppConstants.actions.DO_LOGIN_LINKEDIN, arrParams);
 
 //                linkedInHeadline = linkedinLoginModel.getHeadline();
 //                linkedInIndustry = linkedinLoginModel.getIndustry();
@@ -651,6 +657,40 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
             }
         }
 
+    }
+
+    private boolean isLocationAvailable() {
+        if (!showGPSAlert())
+            return false;
+
+        AppController appController = (AppController) getApplication();
+        currentLocation = appController.getmLastLocation();
+        if (currentLocation == null) {
+            AppUtils.showToast(this, "unable to get location.Try again.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean showGPSAlert() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!statusOfGPS) {
+            ((AppController) getApplication()).showGPSDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+
+                    }
+                }
+            });
+        }
+
+        return statusOfGPS;
     }
 
     @Override
@@ -679,7 +719,7 @@ public class LoginActivity extends DalitHubBaseActivity implements OnClickListen
 
     private void forgotPassword() {
         AlertDialog.Builder b = new AlertDialog.Builder(this,
-                android.R.style.Theme_Holo_Light_Dialog);
+                android.R.style.Theme_DeviceDefault_Dialog);
         b.setTitle("Forgot Password?");
         b.setMessage("Please enter your email id");
         final EditText input = new EditText(this);

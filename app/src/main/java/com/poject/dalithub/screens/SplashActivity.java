@@ -18,11 +18,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class SplashActivity extends Activity {
+    UserPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        mPref = new UserPreferences(this);
 
         printKeyHash();
 
@@ -43,9 +45,10 @@ public class SplashActivity extends Activity {
 
     private void launchActivity() {
 
-        String user_id = new UserPreferences(this).getUserId();
+        String user_id = mPref.getUserId();
+        boolean isAccVerified = mPref.isAccountVerified();
 
-        if (user_id != null && !user_id.equals("")) {
+        if (user_id != null && !user_id.equals("") && isAccVerified) {
             startActivity(new Intent(this, LandingScreenActivity.class));
             this.finish();
         } else {

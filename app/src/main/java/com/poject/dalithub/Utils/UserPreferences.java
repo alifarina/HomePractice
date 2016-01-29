@@ -60,4 +60,12 @@ public class UserPreferences {
     public boolean showOtherStatus() {
         return pref.getBoolean("showOther", false);
     }
+
+    public void setAccountVerified(boolean status) {
+        pref.edit().putBoolean("account_verify", status).commit();
+    }
+
+    public boolean isAccountVerified() {
+        return pref.getBoolean("account_verify", false);
+    }
 }

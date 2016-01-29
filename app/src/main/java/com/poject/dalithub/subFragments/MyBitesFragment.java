@@ -223,6 +223,10 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
 
                     adapter = new BitesAdapter(this, getActivity(), newBites);
                     listView_bites.setAdapter(adapter);
+                    if (likedBitePos > -1) {
+                        listView_bites.setSelection(likedBitePos);
+                        likedBitePos = -1;
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -275,7 +279,10 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
 
     }
 
-    public void setLikesForThisPost(String biteId) {
+    private int likedBitePos;
+
+    public void setLikesForThisPost(String biteId, int position) {
+        likedBitePos = position;
         getData(AppConstants.actions.LIKE_POST, biteId);
     }
 

@@ -199,7 +199,7 @@
             android:onClick="signupClick"
 
             android:padding="8dp"
-            android:text="@string/login_text"
+            android:text="@string/signup_text"
             android:textColor="@color/email_editbox_color_commoon" />
     </RelativeLayout>
 

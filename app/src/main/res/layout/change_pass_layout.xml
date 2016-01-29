@@ -34,7 +34,7 @@
             android:id="@+id/currentPassBox"
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
-            android:hint=" Description.."
+            android:hint=" Current Password"
             android:padding="3dp"
             android:singleLine="true" />
 
@@ -52,7 +52,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
-            android:hint=" Description.."
+            android:hint=" New Password"
             android:id="@+id/newPassBox"
             android:padding="3dp"
             android:singleLine="true" />
@@ -71,7 +71,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/border_darkgray_white_bg"
             android:gravity="top|left"
-            android:hint=" Description.."
+            android:hint=" Confirm Password"
             android:id="@+id/confirmBox"
             android:padding="3dp"
             android:singleLine="true" />

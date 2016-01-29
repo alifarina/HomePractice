@@ -352,11 +352,19 @@ public class SignUpActivity extends DalitHubBaseActivity implements LocationList
 
                     pref.saveUserId(response.getUserId());
 
+//                    Intent in = new Intent(SignUpActivity.this,
+//                            LandingScreenActivity.class);
+//                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(in);
+
                     Intent in = new Intent(SignUpActivity.this,
-                            LandingScreenActivity.class);
-                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AccountVerification.class);
+//                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                            | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(in);
+                    this.finish();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

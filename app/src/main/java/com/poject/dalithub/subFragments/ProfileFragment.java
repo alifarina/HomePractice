@@ -99,7 +99,7 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
                 } else if (v.getId() == R.id.right_button) {
                     System.out.println("right click");
                     Intent intent = new Intent(getLandingActivityContext(), SettingsActivity.class);
-                   // intent.putExtra("user_info", userInfo);
+                    // intent.putExtra("user_info", userInfo);
                     startActivity(intent);
                 }
 
@@ -209,6 +209,8 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
                     AppUtils.showToast(getLandingActivityContext(),
                             ((DalitHubBaseModel) serviceResponse).getResponseDescription());
                     getData(AppConstants.actions.GET_PERSONAL_INFO, mPref.getUserId());
+                    editCompleteLayout.setVisibility(View.GONE);
+                    button_edit.setVisibility(View.VISIBLE);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -304,8 +306,6 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
     }
 
     private void doneProfileEdit() {
-        editCompleteLayout.setVisibility(View.GONE);
-        button_edit.setVisibility(View.VISIBLE);
 
         //getting updated data
         String fname = editTextFirstName.getText().toString();
@@ -317,6 +317,13 @@ public class ProfileFragment extends DalitHubBasefragment implements OnClickList
         String site = editTextSite.getText().toString();
         String phone = editTextPhone.getText().toString();
         String email = editTextEmail.getText().toString();
+
+        if (phone != null && !phone.equals("")) {
+            if (phone.length() < 8) {
+                AppUtils.showToast(mLandingActivity, "Phone no.is not valid.");
+                return;
+            }
+        }
 
         try {
             getData(AppConstants.actions.UPDATE_PERSONAL_INFO, fname, lname, URLEncoder.encode(company, "utf-8"), site, phone, URLEncoder.encode(bio, "utf-8"),
