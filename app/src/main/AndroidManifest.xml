@@ -49,6 +49,9 @@
             android:name=".screens.SignUpActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".screens.DisplayLikesScreen"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".screens.LandingScreenActivity"
             android:screenOrientation="portrait"></activity>
         <activity

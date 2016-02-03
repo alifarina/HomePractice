@@ -63,5 +63,6 @@ public interface AppConstants {
         int SEND_FEEDBACK = 32;
         int UPDATE_PRIVACY = 33;
         int CHANGE_PASSWORD = 34;
+        int GET_USER_LIES = 35;
     }
 }

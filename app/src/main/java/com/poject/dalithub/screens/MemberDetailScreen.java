@@ -178,7 +178,7 @@ public class MemberDetailScreen extends DalitHubBaseActivity implements OnClickL
                     String profilePic = info.getProfileImage();
                     Log.d("Profile pic ", "" + profilePic);
                     if (profilePic != null && !profilePic.equals("")) {
-                        Picasso.with(MemberDetailScreen.this).load(profilePic).into(profile_pic);
+                        Picasso.with(MemberDetailScreen.this).load(profilePic).resize(200,200).into(profile_pic);
                     }
 
 

@@ -21,6 +21,7 @@ import com.poject.dalithub.Utils.UserPreferences;
 import com.poject.dalithub.models.Member;
 import com.poject.dalithub.models.NewBite;
 import com.poject.dalithub.screens.BitesFullScreenView;
+import com.poject.dalithub.screens.LandingScreenActivity;
 import com.poject.dalithub.screens.MemberDetailScreen;
 import com.poject.dalithub.subFragments.DalitHubBasefragment;
 import com.poject.dalithub.subFragments.MyBitesFragment;
@@ -37,7 +38,7 @@ public class BitesAdapter extends BaseAdapter {
         myBitesList = list;
         mContext = con;
         fragContext = frag;
-        mPref = new UserPreferences(fragContext.getLandingActivityContext());
+        mPref = new UserPreferences((LandingScreenActivity) mContext);
         AppUtils.updateDeviceResolution(frag.getLandingActivityContext());
     }
 
@@ -141,7 +142,7 @@ public class BitesAdapter extends BaseAdapter {
         holder.numLikes.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MyBitesFragment) fragContext).setLikesForThisPost(biteData.getBiteid(),position);
+                ((MyBitesFragment) fragContext).setLikesForThisPost(biteData.getBiteid(), position, (int) view.getY());
             }
         });
 //        holder.spamClick.setOnClickListener(new OnClickListener() {

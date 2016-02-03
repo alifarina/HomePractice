@@ -29,6 +29,9 @@ public class EventModel {
     @SerializedName("year")
     @Expose
     private String year;
+    @SerializedName("weekname")
+    @Expose
+    private String weekname;
 
     /**
      * @return The eventId
@@ -113,8 +116,6 @@ public class EventModel {
 //    public void setDateofweek(String dateofweek) {
 //        this.dateofweek = dateofweek;
 //    }
-
-
     public String getYear() {
         return year;
     }
@@ -137,5 +138,13 @@ public class EventModel {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getWeekname() {
+        return weekname;
+    }
+
+    public void setWeekname(String weekname) {
+        this.weekname = weekname;
     }
 }

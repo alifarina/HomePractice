@@ -51,7 +51,8 @@ public class EventsAdapter extends BaseAdapter {
                     R.layout.list_item_events, null);
             holder = new ViewHolder();
             holder.eventName = (TextView) convertView.findViewById(R.id.label_text);
-            holder.eventTime = (TextView) convertView.findViewById(R.id.time_display);
+            holder.eventTime = (TextView) convertView.findViewById(R.id.date);
+            holder.week = (TextView) convertView.findViewById(R.id.week);
 
             convertView.setTag(holder);
         } else {
@@ -67,7 +68,8 @@ public class EventsAdapter extends BaseAdapter {
         String[] dateArr = date.split(" ");
         String dateString = dateArr[0];
         dateString = dateString.substring(0, dateString.lastIndexOf("/"));
-        holder.eventTime.setText(events.getDay() + " " + setEventMonth(events.getMonth()));
+        holder.eventTime.setText(events.getDay());
+        holder.week.setText(events.getWeekname().substring(0, 3));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,5 +93,6 @@ public class EventsAdapter extends BaseAdapter {
     class ViewHolder {
         TextView eventName;
         TextView eventTime;
+        public TextView week;
     }
 }

@@ -33,9 +33,9 @@ import com.poject.dalithub.models.DalitHubBaseModel;
 import com.poject.dalithub.models.NewBite;
 import com.poject.dalithub.screens.CommentsScreen;
 import com.poject.dalithub.screens.CreateBitesScreen;
+import com.poject.dalithub.screens.DisplayLikesScreen;
 import com.poject.dalithub.screens.LandingScreenActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyBitesFragment extends DalitHubBasefragment implements OnClickListener {
@@ -45,6 +45,7 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
     private ImageView leftTopButton, rightTopButton;
     LandingScreenActivity activity;
     private UserPreferences mPref;
+    private int yPos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,8 +225,9 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
                     adapter = new BitesAdapter(this, getActivity(), newBites);
                     listView_bites.setAdapter(adapter);
                     if (likedBitePos > -1) {
-                        listView_bites.setSelection(likedBitePos);
+                        listView_bites.setSelectionFromTop(likedBitePos, yPos);
                         likedBitePos = -1;
+                        yPos = -1;
                     }
 
                 } catch (Exception e) {
@@ -281,28 +283,30 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
 
     private int likedBitePos;
 
-    public void setLikesForThisPost(String biteId, int position) {
+    public void setLikesForThisPost(String biteId, int position, int y) {
         likedBitePos = position;
+        yPos = y;
         getData(AppConstants.actions.LIKE_POST, biteId);
     }
 
-    Dialog delDialog;
+    Dialog moreDialog;
     private String selectedBiteId;
 
     public void showDeleteSelectionDialog(String postedUserId, String biteId) {
 
         selectedBiteId = biteId;
 
-        delDialog = new Dialog(mLandingActivity, android.R.style.Theme_DeviceDefault_Dialog);
-        delDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        delDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        delDialog.setCancelable(false);
-        delDialog.setContentView(R.layout.more_bites_layout);
-        delDialog.show();
+        moreDialog = new Dialog(mLandingActivity, android.R.style.Theme_DeviceDefault_Dialog);
+        moreDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        moreDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        moreDialog.setCancelable(false);
+        moreDialog.setContentView(R.layout.more_bites_layout);
+        moreDialog.show();
 
-        TextView cancelDialogBtn = (TextView) delDialog.findViewById(R.id.cancel);
-        TextView spamDialogBtn = (TextView) delDialog.findViewById(R.id.spam);
-        TextView delDialogBtn = (TextView) delDialog.findViewById(R.id.delete);
+        TextView cancelDialogBtn = (TextView) moreDialog.findViewById(R.id.cancel);
+        TextView spamDialogBtn = (TextView) moreDialog.findViewById(R.id.spam);
+        TextView delDialogBtn = (TextView) moreDialog.findViewById(R.id.delete);
+        TextView displayLikes = (TextView) moreDialog.findViewById(R.id.likes);
 
         // display delete button only if its owned content
         delDialogBtn.setVisibility(View.GONE);
@@ -313,6 +317,7 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
         cancelDialogBtn.setOnClickListener(this);
         spamDialogBtn.setOnClickListener(this);
         delDialogBtn.setOnClickListener(this);
+        displayLikes.setOnClickListener(this);
 
     }
 
@@ -351,20 +356,32 @@ public class MyBitesFragment extends DalitHubBasefragment implements OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cancel:
-                if (delDialog != null && delDialog.isShowing())
-                    delDialog.dismiss();
+                if (moreDialog != null && moreDialog.isShowing())
+                    moreDialog.dismiss();
                 break;
             case R.id.delete:
-                if (delDialog != null && delDialog.isShowing())
-                    delDialog.dismiss();
+                if (moreDialog != null && moreDialog.isShowing())
+                    moreDialog.dismiss();
                 markContentAsSpam(selectedBiteId, "2");
                 break;
             case R.id.spam:
-                if (delDialog != null && delDialog.isShowing())
-                    delDialog.dismiss();
+                if (moreDialog != null && moreDialog.isShowing())
+                    moreDialog.dismiss();
                 markContentAsSpam(selectedBiteId, "3");
 
                 break;
+            case R.id.likes:
+                if (moreDialog != null && moreDialog.isShowing())
+                    moreDialog.dismiss();
+
+                displayLikes();
+                break;
         }
+    }
+
+    private void displayLikes() {
+        Intent intent = new Intent(mLandingActivity, DisplayLikesScreen.class);
+        intent.putExtra("bite_id", selectedBiteId);
+        startActivity(intent);
     }
 }

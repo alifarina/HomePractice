@@ -40,6 +40,22 @@
             android:text="SPAM"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/tab_bottom_bg_color" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/tab_bottom_bg_color" />
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/num_likes"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Show Likes"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/tab_bottom_bg_color" />
 
         <View
             android:layout_width="match_parent"

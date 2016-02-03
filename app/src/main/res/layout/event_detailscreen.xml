@@ -37,7 +37,6 @@
                     android:id="@+id/header_date"
                     android:background="@drawable/border_tabcolor_trance_bg"
                     android:padding="3dp"
-                    android:text="15 Sep"
                     android:textColor="@color/tab_bottom_bg_color" />
 
                 <TextView
@@ -48,7 +47,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:padding="3dp"
-                    android:text="Tie Social Forum"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="@color/tab_bottom_bg_color" />
             </RelativeLayout>
@@ -80,7 +78,6 @@
                         android:layout_centerVertical="true"
                         android:id="@+id/event_time"
                         android:padding="3dp"
-                        android:text="5 PM"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/tab_bottom_bg_color" />
 
@@ -91,7 +88,6 @@
                         android:id="@+id/event_date"
                         android:layout_centerVertical="true"
                         android:padding="3dp"
-                        android:text="Thu, Sep 15"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/tab_bottom_bg_color" />
                 </LinearLayout>
@@ -137,7 +133,6 @@
                 android:drawableLeft="@drawable/location_icon"
                 android:drawablePadding="5dp"
                 android:padding="5dp"
-                android:text="Tie Banglore @ Langtar Garden, Karnataka India"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@color/tab_bottom_bg_color" />
 
@@ -156,7 +151,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="@color/tab_bottom_bg_color" />
 
