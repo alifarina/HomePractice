@@ -12,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.poject.dalithub.R;
+import com.poject.dalithub.Utils.AppUtils;
 import com.poject.dalithub.Utils.UserPreferences;
 import com.poject.dalithub.models.Comment;
 import com.poject.dalithub.models.EventCommentModel;
 import com.poject.dalithub.screens.CommentsScreen;
 import com.poject.dalithub.screens.EventsCommentsScreen;
 import com.poject.dalithub.subFragments.MyBitesFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class EventCommentsAdapter extends BaseAdapter {
         commentsList = list;
         mContext = con;
         mPref = new UserPreferences((Activity) con);
+        AppUtils.updateDeviceResolution((Activity) mContext);
     }
 
     @Override
@@ -59,6 +62,7 @@ public class EventCommentsAdapter extends BaseAdapter {
             holder.time = (TextView) v.findViewById(R.id.time);
             holder.content = (TextView) v.findViewById(R.id.comment_content);
             holder.deleteIcon = (ImageView) v.findViewById(R.id.deleteComment);
+            holder.profile_image = (ImageView) v.findViewById(R.id.profile_image);
 
             v.setTag(holder);
         } else {
@@ -75,6 +79,12 @@ public class EventCommentsAdapter extends BaseAdapter {
         if (comment.getUserId().equals(mPref.getUserId()))
             holder.deleteIcon.setVisibility(View.VISIBLE);
 
+        if (comment.getProfileImage() != null && !comment.getProfileImage().equals("")) {
+
+            int profileParams = (int) (AppUtils.DEVICE_HEIGHT * 0.1f);
+            Picasso.with(mContext).load(comment.getProfileImage()).resize(profileParams, profileParams).into(holder.profile_image);
+        }
+
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,5 +100,6 @@ public class EventCommentsAdapter extends BaseAdapter {
         TextView time;
         TextView content;
         ImageView deleteIcon;
+        ImageView profile_image;
     }
 }

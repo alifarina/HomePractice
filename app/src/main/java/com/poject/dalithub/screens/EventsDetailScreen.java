@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
     private TextView event_time;
     private TextView event_date;
     private TextView headerDate;
+    private LinearLayout commentsLayout;
 
     public EventDetailBaseClass getResponse() {
         return response;
@@ -63,7 +65,7 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_detailscreen);
-
+        AppUtils.updateDeviceResolution(this);
         mPref = new UserPreferences(this);
         eve_id = getIntent().getStringExtra("event_id");
 
@@ -240,6 +242,40 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         } else {
             view_more_members.setVisibility(View.GONE);
         }
+
+        //Adding two recent comments
+        List<EventCommentModel> commentsList = response.getEventcomments();
+        if (commentsList != null && commentsList.size() > 0) {
+
+            //clear any previour child
+            commentsLayout.removeAllViews();
+            int count = 0;
+            for (EventCommentModel comments : commentsList) {
+
+                if (count >= 2)
+                    break;
+                count++;
+
+                View comment_item = inflater.inflate(R.layout.list_item_comments, null);
+
+                TextView time = (TextView) comment_item.findViewById(R.id.time);
+                TextView tv_comment = (TextView) comment_item.findViewById(R.id.comment_content);
+                ImageView profile_image = (ImageView) comment_item.findViewById(R.id.profile_image);
+                comment_item.findViewById(R.id.deleteComment).setVisibility(View.GONE);
+
+                //setting values
+                tv_comment.setText(Html.fromHtml("<B>" + comments.getUserName() + "</B> " + comments.getComment()));
+                time.setText(comments.getCommentedTime());
+
+                if (comments.getProfileImage() != null && !comments.getProfileImage().equals("")) {
+
+                    int profileParams = (int) (AppUtils.DEVICE_HEIGHT * 0.08f);
+                    Picasso.with(this).load(comments.getProfileImage()).resize(profileParams, profileParams).into(profile_image);
+                }
+
+                commentsLayout.addView(comment_item);
+            }
+        }
     }
 
     private void setScreenListeners() {
@@ -262,6 +298,7 @@ public class EventsDetailScreen extends DalitHubBaseActivity implements OnClickL
         event_time = (TextView) findViewById(R.id.event_time);
         event_date = (TextView) findViewById(R.id.event_date);
         headerDate = (TextView) findViewById(R.id.header_date);
+        commentsLayout = (LinearLayout) findViewById(R.id.commentsLayout);
 
         rsvpLayout = (RelativeLayout) findViewById(R.id.rsvp_layout);
         weblinkClick = (ImageView) findViewById(R.id.weblink);

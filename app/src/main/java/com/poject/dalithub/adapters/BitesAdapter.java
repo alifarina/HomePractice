@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.poject.dalithub.R;
@@ -121,6 +122,9 @@ public class BitesAdapter extends BaseAdapter {
         }
         holder.postImage.setVisibility(View.GONE);
         if (biteData.getImageUrl() != null && !biteData.getImageUrl().equals("")) {
+            LinearLayout.LayoutParams postImageParams = (LinearLayout.LayoutParams) holder.postImage.getLayoutParams();
+            postImageParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            postImageParams.height = (int) (AppUtils.DEVICE_HEIGHT * 0.3f);
             holder.postImage.setVisibility(View.VISIBLE);
             Picasso.with(mContext).load(biteData.getImageUrl()).placeholder(-1).into(holder.postImage);
         }
