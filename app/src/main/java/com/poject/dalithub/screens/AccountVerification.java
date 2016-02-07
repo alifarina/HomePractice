@@ -172,4 +172,8 @@ public class AccountVerification extends DalitHubBaseActivity implements OnClick
         return AppConstants.baseUrl + "verifyuser?userId=" + userId + "&code=" + code + "&type=1";
 
     }
+
+    public void resendOTP(View v) {
+        
+    }
 }

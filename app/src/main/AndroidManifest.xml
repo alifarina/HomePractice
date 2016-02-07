@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -28,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".screens.LoginSignupChooserActivity"
             android:screenOrientation="portrait"></activity>
@@ -43,7 +48,13 @@
                 <data
                     android:host="litestcalback"
                     android:scheme="x-oauthflow-linkedin" />
+
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".screens.PickLocationActivity"
+            android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".screens.SignUpActivity"

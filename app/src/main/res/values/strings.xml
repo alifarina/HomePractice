@@ -57,7 +57,7 @@
         <item>OCT</item>
         <item>NOV</item>
         <item>DEC</item>
-
-
     </string-array>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyBnsntAMgxLTgXnJW96dpK4hGH_rX5Vf9U</string>
 </resources>

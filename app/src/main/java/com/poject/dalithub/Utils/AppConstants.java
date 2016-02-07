@@ -12,6 +12,7 @@ public interface AppConstants {
     int EVENT_CREATED = 102;
 
     int RESULT_USER_COMMENTED = 123;
+    int LOCATION_DATA = 1111;
 
     /**
      * credentials for linkedin connectivity

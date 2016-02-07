@@ -58,7 +58,7 @@ public class AppController extends BaseApplication implements GoogleApiClient.Co
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        ACRA.init(this);
+       // ACRA.init(this);
 
         buildGoogleApiClient();
         createLocationRequest();

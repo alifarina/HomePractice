@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-
+                    android:onClick="pickLocation"
                     android:padding="5dp"
                     android:src="@drawable/location_icon" />
             </RelativeLayout>

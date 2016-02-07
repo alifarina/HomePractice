@@ -179,9 +179,8 @@ public class CreateEventsActivity extends DalitHubBaseActivity implements OnClic
             ((TextView) findViewById(R.id.addImage_button)).setText("Image Added");
 
 
-        } else {
-            Toast.makeText(this, "You haven't picked Image",
-                    Toast.LENGTH_LONG).show();
+        } else if (requestCode == AppConstants.LOCATION_DATA && resultCode == RESULT_OK && data != null) {
+            Log.d("Map data", "--------------result--------");
         }
     }
 
@@ -222,8 +221,8 @@ public class CreateEventsActivity extends DalitHubBaseActivity implements OnClic
                 AppUtils.showToast(CreateEventsActivity.this, "Please enter a valid URL");
                 return;
             }
-        }else{
-            webLink="";
+        } else {
+            webLink = "";
         }
         AppController appController = (AppController) getApplication();
         currentLocation = appController.getmLastLocation();
@@ -400,4 +399,9 @@ public class CreateEventsActivity extends DalitHubBaseActivity implements OnClic
             eventTime.setText(strHr + ":" + mins + " " + dayLight);
         }
     };
+
+    public void pickLocation(View v) {
+        Intent locIntent = new Intent(this, PickLocationActivity.class);
+        startActivityForResult(locIntent, AppConstants.LOCATION_DATA);
+    }
 }
